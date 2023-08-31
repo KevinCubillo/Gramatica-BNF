@@ -8,7 +8,7 @@ Terminales
 <boolean> = “true”  | “false”
 <char> = ‘ [a-zA-Z0-9] ‘
 <String> = “ [a-zA-Z0-9]* “
-<operator> = “+” |  “-” |  “*”  | “/” | “%” | “^”
+<operator> ::= "+" | "-"|"*" | "/" | "%"
 <assign> = “=”
 <endLine> = “;
 <relationalOp> = "==" | "!=" | "<" | ">" | "<=" | ">="
@@ -22,40 +22,96 @@ Terminales
 <comment> = "//" [^\\n]* | "/*" .* "*/"
 <separator> ::= "#"
 <if>::=”if”
-<if_else>::=”if else”
+<else>::=”else”
 <identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
-
+<return>::=”return”
+<break>::=”break”
+<for> ::= “for”
+<in> ::= “in”
+<range> “range”
+<while>::=”while”
 <type> ::= “integer” | “float” | “boolean” | “char” | “String”
-
+<main>::= “main”
 <text> ::= [a-zA-Z_][a-zA-Z0-9_]*
+<linealcomment>::=”//”
+<startcomment>::=”/*”
+<endcomment>::=”*/”
+<comment>::=<linealcomment><text>|<startcomment><text><endcomment>
+<read> ::= “read”
+<readSymbol> ::= “>>”
+<print> ::= “print”
+<printSymbol> :: “<<”
+
+
 <data> ::=  <integer> | <float> | <boolean> | <char> | <String>| <identifier>
 <argument>::= <data>
 <argument>::=<negation> <data>
 
-<comparation>::=<relationalOp>|<logicalOp>
+<comparison> ::= <relation_expression> | <comparison> <logicalOp> <relation_expression>
+<relation_comparison> ::= <data> <relationalOp> <expression>
 
-<block> ::=  <statement>
+
+
+<main>::= <type> <main> <parenthesisOpen> <parenthesisClose> <blockStart> <statements><endBlock>
 <multiblock>::= <multiblock> <block>
-<multiblock>::=<block>
-<statement> ::= <variable_decl> | <assignment> | <expression> | <if_stmt> | <while_loop> | <function_call>
+<multiblock>::= <statements>
+<statement> ::= <variable_decl> | <assignment> | <expression> | <if_stmt> | <while_loop> | <function_call>|<return>|<break>|<comment>
 <statements>::=<statements><statement>
 <statements>::=<statement>
 <decl> ::=  <type> <separator> <identifier> <endLine>
 <declarations> ::= <declarations> <decl>
 <declarations> ::= <decl>
-<if_stmt> ::= <if><parenthesisOpen> <argument> <comparation> <argument>  <parenthesisClose> <block>
-<if_else_st> ::= <if><parenthesisOpen> <argument> <comparation> <argument>  <parenthesisClose> <block>
+<expression> ::= <term> | <expression> <operator> <term>
+<term> ::= <factor> | <term> <operator> <factor>
+<factor> ::= <data> | <parenthesisOpen> <expression> <parenthesisClose>
 
 
 
+<conditional_expression> ::= <data><logicalOp> | <relationalOp> <data> 
+
+<conditional_expresions> ::= <conditional_expression> 
+
+<conditional_expresions> ::=<parenthesisOpen> <conditional_expression> 
+
+<conditional_expresions> ::=  <conditional_expressions> <logicalOp> | <relationalOp> <conditional_expression>
+
+
+
+
+<if_stmt> ::= <if> <parenthesisOpen> <conditional_expresion> <parenthesisClose> <blockStart> <statements><endBlock>
+
+
+
+<if_else_stmt> ::= <if> <parenthesisOpen> <conditional_expresion><parenthesisClose> <blockStart> <statements> <endBlock> <else> <blockStart> <statements> <endBlock>
+
+
+
+
+
+<while_stm> ::= <while><parenthesisOpen><conditional_expresion><parenthesisClose><blockStart><statements><endBlock>
+
+
+
+<for_range> ::= <for> identifier <in> <range> <parenthesisOpen> <int> <comma> <int> <parenthesisClose><blockStart><statements><endBlock>
+
+<for_range> ::= <for> identifier <in> <range> <parenthesisOpen> <int> <parenthesisClose> <blockStart> <statements> <endBlock>
+
+
+
+for i in range(5, 8):
+for i in range(3):
 
 Statements
 
 
-<assignment> ::= <identifier> <assign> <integer> | <float> | <boolean> | <char> <endLine>
+<assignment> ::= <identifier> <assign> <expression> <endLine>
 
-<decl_and_assignment> ::= <type> <separator> <identifier> <assign> <integer> | <float> | 
-<boolean> | <char> <endLine>
+
+<decl_and_assignment> ::= <type> <separator> <identifier> <assign> <expression> <endLine>
+
+<readIntFloat> ::= <read><separator><readSymbol>
+
+
 
 
 Símbolo inicial
