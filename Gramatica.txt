@@ -109,8 +109,14 @@ Statements
 
 <decl_and_assignment> ::= <type> <separator> <identifier> <assign> <expression> <endLine>
 
-<readIntFloat> ::= <read><separator><readSymbol>
+<readIntFloat> ::= <read><separator><readSymbol><identifier><endLine>
+<printData> ::= <print><separator><printSymbol><identifier><endLine>
 
+<sendParameter> ::= <identifier>  | <data>
+<sendParameters> ::= <sendParameter>
+<sendParameters> :: <Sendparameters> <comma> <Sendparameter>
+
+<callFunction> ::= <identifier><parenthesisOpen><sendParameters><endLine>
 
 
 
