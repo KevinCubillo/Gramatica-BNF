@@ -1,8 +1,9 @@
 Kevin Cubillo y Fabricio Rios
 
+##############################################################################################################
 
+TERMINALES
 
-Terminales
 <integer> = 0 | -? [1-9][0-9]*
 <float> = [0-9]+ \. [0-9]*
 <boolean> = “true”  | “false”
@@ -31,105 +32,90 @@ Terminales
 <range> “range”
 <while>::=”while”
 <type> ::= “integer” | “float” | “boolean” | “char” | “String”
-<main>::= “main”
 <text> ::= [a-zA-Z_][a-zA-Z0-9_]*
-<linealcomment>::=”//”
-<startcomment>::=”/*”
-<endcomment>::=”*/”
-<comment>::=<linealcomment><text>|<startcomment><text><endcomment>
+<linealcomment>::= ”//”
+<startcomment>::= ”/*”
+<endcomment>::= ”*/”
 <read> ::= “read”
 <readSymbol> ::= “>>”
 <print> ::= “print”
-<printSymbol> :: “<<”
+<printSymbol> =:: “<<”
+<literal> ::=  <integer> | <float> | <boolean> | <char> | <String>
+<switch>::= ”switch”
+<case> ::= ”case”
+<dots> ::= ”:”
+<default> ::= ”default”
 
+##############################################################################################################
 
-<data> ::=  <integer> | <float> | <boolean> | <char> | <String>| <identifier>
-<argument>::= <data>
-<argument>::=<negation> <data>
-
-<comparison> ::= <relation_expression> | <comparison> <logicalOp> <relation_expression>
-<relation_comparison> ::= <data> <relationalOp> <expression>
-
-
-
-<main>::= <type> <main> <parenthesisOpen> <parenthesisClose> <blockStart> <statements><endBlock>
-<multiblock>::= <multiblock> <block>
-<multiblock>::= <statements>
-<statement> ::= <variable_decl> | <assignment> | <expression> | <if_stmt> | <while_loop> | <function_call>|<return>|<break>|<comment>
-<statements>::=<statements><statement>
-<statements>::=<statement>
-<decl> ::=  <type> <separator> <identifier> <endLine>
-<declarations> ::= <declarations> <decl>
-<declarations> ::= <decl>
-<expression> ::= <term> | <expression> <operator> <term>
-<term> ::= <factor> | <term> <operator> <factor>
-<factor> ::= <data> | <parenthesisOpen> <expression> <parenthesisClose>
-
-
-
-<conditional_expression> ::= <data><logicalOp> | <relationalOp> <data> 
-
-<conditional_expresions> ::= <conditional_expression> 
-
-<conditional_expresions> ::=<parenthesisOpen> <conditional_expression> 
-
-<conditional_expresions> ::=  <conditional_expressions> <logicalOp> | <relationalOp> <conditional_expression>
-
-
-
-
-<if_stmt> ::= <if> <parenthesisOpen> <conditional_expresion> <parenthesisClose> <blockStart> <statements><endBlock>
-
-
-
-<if_else_stmt> ::= <if> <parenthesisOpen> <conditional_expresion><parenthesisClose> <blockStart> <statements> <endBlock> <else> <blockStart> <statements> <endBlock>
-
-
-
-
-
-<while_stm> ::= <while><parenthesisOpen><conditional_expresion><parenthesisClose><blockStart><statements><endBlock>
-
-
-
-<for_range> ::= <for> identifier <in> <range> <parenthesisOpen> <int> <comma> <int> <parenthesisClose><blockStart><statements><endBlock>
-
-<for_range> ::= <for> identifier <in> <range> <parenthesisOpen> <int> <parenthesisClose> <blockStart> <statements> <endBlock>
-
-
-
-for i in range(5, 8):
-for i in range(3):
-
-Statements
-
-
-<assignment> ::= <identifier> <assign> <expression> <endLine>
-
-
-<decl_and_assignment> ::= <type> <separator> <identifier> <assign> <expression> <endLine>
-
-<readIntFloat> ::= <read><separator><readSymbol><identifier><endLine>
-<printData> ::= <print><separator><printSymbol><identifier><endLine>
-
-<sendParameter> ::= <identifier>  | <data>
+<sendParameter> ::= <identifier> | <literal>
 <sendParameters> ::= <sendParameter>
 <sendParameters> :: <Sendparameters> <comma> <Sendparameter>
 
-<callFunction> ::= <identifier><parenthesisOpen><sendParameters><endLine>
+##############################################################################################################
 
+OPERATIONS
+<aritmeticOperation> ::= <literal> | <identifier> <operator> <literal> | <identifier> <endline>
+<aritmeticOperation> ::=  <aritmeticOperation> <>
 
+<conditional_operation> ::= <literal> <logicalOp> | <relationalOp> <literal> 
+<conditional_operations> ::= <conditional_operation> 
+<conditional_operations> ::=  <conditional_operations> <logicalOp> | <relationalOp> <conditional_operation>
+<conditional_operations> ::=  <parenthesisOpen> <conditional_operations> <logicalOp> | <relationalOp> <conditional_operation> <parenthesisOpen> 
 
-Símbolo inicial
-<program_start> ::= <programa>
+<operation> ::= <aritmeticOperation> | <conditional_operation>
+<operations> ::= <operation>
+<operations> ::= <operations> <operation>
 
+##############################################################################################################
 
-No terminales
-<programa> ::= <functions>
-<programa> ::= <functions><declarations>
+STATEMENTS
+
+<decl> ::= <type> <separator> <identifier> <endLine>
+<assignment> ::= <identifier> <assign> <literal> | <identifier> | <operations> <endLine>
+<decl_and_assignment> ::= <type> <separator> <identifier> <assign> <literal> | <identifier> | <aritmeticOperation> | <conditional_operations>  <endLine>
+<readData> ::= <read> <separator> <readSymbol> <identifier> <endLine>
+<printdata> ::= <print> <separator> <printSymbol> <identifier> <endLine>
+<callFunction> ::= <identifier> <parenthesisOpen> <sendParameters> <endLine>
+
+<statement> ::= <decl> | <assignment> | <decl_and_assignment> | <readData> | <printData> | <callFunction>
+<statements>::= <statement>
+<statements>::= <statements> <statement>
+
+##############################################################################################################
+
+EXPRESSIONS
+
+<if_expr> ::= <if> <parenthesisOpen> <conditional_expresion> <parenthesisClose> <blockStart> <expressions> <endBlock>
+<if_else_expr> ::= <if_expr> <else> <blockStart> <expressions> <endBlock>
+<while_expr> ::= <while> <parenthesisOpen> <conditional_expresion> <parenthesisClose> <blockStart> <expressions> <endBlock>
+<while_else_expr> ::= <while_expr> <else> <blockStart> <expressions> <endBlock>
+<for_range> ::= <for> identifier <in> <range> <parenthesisOpen> <int> <comma> <int> <parenthesisClose> <blockStart> <expressions> <endBlock>
+<for_range> ::= <for> identifier <in> <range> <parenthesisOpen> <int> <parenthesisClose> <blockStart> <expressions> <endBlock>
+
+<case_statement> ::= <case> <literal> <dots> <expressions>
+<default_statement> ::= <default> <dots> <expressions>
+<switch_statement> ::= <switch> <parenthesisOpen> <operations> | <identifier> | <literal> <parenthesisClose> <blockStart> (<case_statement> | <default_statement>)* <endBlock>
+
+<expression> ::= <statements> | <if_expr> | <while_expr> | <for_range> | 
+<expressions> ::= <expression> 
+<expressions> ::= <expressions> <expression>
+
+#################################################################################################################
+
+<program> ::= <functions> <declarations>
 <parameter> ::= <type> <separator> <identifier>
 <parameters> ::= <parameters> <comma> <parameter>
 <parameters> ::= <parameter>
 
-<function> ::= "function" <separator> <type> <identifier> <parenthesisOpen><parameters> <parenthesisClose> <blockStart> <block><endBlock>
+<function> ::= <type> <separator> <identifier> <parenthesisOpen> <parameters> <parenthesisClose> <blockStart> <expressions> <endBlock>
+<functions> ::= <function>
+<functions> ::= <functions> <function>
+
+SIMBOLO INICIAL
+
+<program_start> ::= <program>
+<program> ::= <functions>
+
+<comment> ::= <linealcomment> <text> | <startcomment> <text> <endcomment>
 
