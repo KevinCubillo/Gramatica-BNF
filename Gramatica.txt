@@ -46,26 +46,25 @@ TERMINALES
 <dots> ::= ”:”
 <default> ::= ”default”
 
-##############################################################################################################
-
-<sendParameter> ::= <identifier> | <literal>
-<sendParameters> ::= <sendParameter>
-<sendParameters> :: <Sendparameters> <comma> <Sendparameter>
 
 ##############################################################################################################
 
 OPERATIONS
-<aritmeticOperation> ::= <literal> | <identifier> <operator> <literal> | <identifier> <endline>
-<aritmeticOperation> ::=  <aritmeticOperation> <>
+
+<aritmeticOperation> ::= <literal> | <identifier> <operator> <literal> | <identifier>
+<aritmeticOperations> ::=  <aritmeticOperation> 
+<aritmeticOperations> ::= <aritmeticOperations> <operator> <aritmeticOperation>
+<aritmeticOperations> ::= <parenthesisOpen> <aritmeticOperations> <operator> <aritmeticOperation> <parenthesisClose>
 
 <conditional_operation> ::= <literal> <logicalOp> | <relationalOp> <literal> 
 <conditional_operations> ::= <conditional_operation> 
 <conditional_operations> ::=  <conditional_operations> <logicalOp> | <relationalOp> <conditional_operation>
-<conditional_operations> ::=  <parenthesisOpen> <conditional_operations> <logicalOp> | <relationalOp> <conditional_operation> <parenthesisOpen> 
+<conditional_operations> ::=  <parenthesisOpen> <conditional_operations> <logicalOp> | <relationalOp> <conditional_operation> <parenthesisClose> 
 
 <operation> ::= <aritmeticOperation> | <conditional_operation>
 <operations> ::= <operation>
-<operations> ::= <operations> <operation>
+<operations> ::= <operations> <operator | <logicalOp> | <relationalOp> <operation>
+<operations> ::=  <parenthesisOpen> <operations> <operator> | <logicalOp> | <relationalOp> <operation> <parenthesisClose>
 
 ##############################################################################################################
 
@@ -103,10 +102,16 @@ EXPRESSIONS
 
 #################################################################################################################
 
-<program> ::= <functions> <declarations>
+PARAMETERS 
+
 <parameter> ::= <type> <separator> <identifier>
 <parameters> ::= <parameters> <comma> <parameter>
 <parameters> ::= <parameter>
+<sendParameter> ::= <identifier> | <literal>
+<sendParameters> ::= <sendParameter>
+<sendParameters> :: <sendparameters> <comma> <sendparameter>
+
+#################################################################################################################
 
 <function> ::= <type> <separator> <identifier> <parenthesisOpen> <parameters> <parenthesisClose> <blockStart> <expressions> <endBlock>
 <functions> ::= <function>
@@ -116,6 +121,7 @@ SIMBOLO INICIAL
 
 <program_start> ::= <program>
 <program> ::= <functions>
+<program> ::= <functions> <declarations>
 
 <comment> ::= <linealcomment> <text> | <startcomment> <text> <endcomment>
 
